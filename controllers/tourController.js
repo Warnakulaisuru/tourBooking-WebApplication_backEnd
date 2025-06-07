@@ -76,24 +76,33 @@ export const getSingaleTour = async (req, res) => {
 };
 
 //getAll tour
+// Get all tours (returns all tours if no page query param)
 export const getAllTour = async (req, res) => {
-  //for pagination
   const page = parseInt(req.query.page);
 
   try {
-    const tour = await Tour.find({}).populate('reviews')
-      .skip(page * 8)
-      .limit(8);
+    let tours;
+    if (isNaN(page)) {
+      // No page provided, return all tours
+      tours = await Tour.find({}).populate("reviews");
+    } else {
+      // Paginate: 8 per page
+      tours = await Tour.find({})
+        .populate("reviews")
+        .skip(page * 8)
+        .limit(8);
+    }
+
     res.status(200).json({
       success: true,
-      const: tour.length,
-      message: "Successfully",
-      data: tour,
+      count: tours.length,
+      message: "Successfully fetched tours",
+      data: tours,
     });
   } catch (err) {
     res.status(404).json({
       success: false,
-      message: "not found",
+      message: "Tours not found",
     });
   }
 };
@@ -129,7 +138,7 @@ export const getTourBySearch = async (req, res) => {
 export const getFeaturedTour = async (req, res) => {
 
   try {
-    const tour = await Tour.find({featured:true}).populate('reviews').limit(8);
+    const tour = await Tour.find({featured:true}).populate('reviews').limit(4);
     res.status(200).json({
       success: true,
       message: "Successfully",
