@@ -1,4 +1,5 @@
 import express from "express";
+import upload from "../utils/multer.js";
 import {
   createTour,
   deleteTour,
@@ -14,9 +15,10 @@ import { verifyAdmin } from "../utils/verifyToken.js";
 const router = express.Router();
 
 //create tour
-router.post("/",verifyAdmin, createTour);
+router.post("/", verifyAdmin, upload.single("photo"), createTour);
 //updae tour
-router.put("/:id",verifyAdmin, updateTour);
+// Update tour with image upload
+router.put("/:id", verifyAdmin, upload.single("photo"), updateTour);
 //delete tour
 router.delete("/:id",verifyAdmin, deleteTour);
 //get single tour
@@ -27,5 +29,6 @@ router.get("/", getAllTour);
 router.get("/search/getTourBySearch", getTourBySearch);
 router.get("/search/getFeaturedTour", getFeaturedTour);
 router.get("/search/getTourCount", getTourCount);
+
 
 export default router;
