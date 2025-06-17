@@ -13,6 +13,7 @@ import authRoute from './routes/auth.js';
 import reviewRoute from './routes/reviews.js';
 import bookingRoute from './routes/booking.js';
 import dashboardRoute from './routes/dashboard.js';
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 dotenv.config()
 // const app = express()
@@ -59,6 +60,7 @@ app.use('/api/v1/users',userRoute);
 app.use('/api/v1/review',reviewRoute);
 app.use('/api/v1/booking',bookingRoute);
 app.use('/api/v1/dashboard', dashboardRoute);
+app.use("/api/payment", paymentRoutes);
 
 
 
